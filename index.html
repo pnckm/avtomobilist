@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8fafb">
+  <meta name="description" content="Автомобилист: календарь, статистика игроков, подробности матчей и турнирная таблица КХЛ.">
+  <title>Автомобилист · КХЛ</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./hub.css">
+  <script type="module" src="./hub.js"></script>
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <div><div class="title-row"><span class="club-emblem" aria-hidden="true"><img id="club-logo" alt="" width="42" height="42" hidden><span id="club-monogram">А</span></span><h1>Автомобилист</h1><div class="season-picker" id="season-picker"><button type="button" id="season" class="season-toggle" aria-label="Выбрать сезон" aria-haspopup="listbox" aria-expanded="false" aria-controls="season-menu" disabled><span class="season-prefix">Сезон</span><span id="season-label">—</span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="m3 4.5 3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div id="season-menu" class="season-menu" role="listbox" aria-label="Выбор сезона" hidden></div></div></div><p class="status-line">Регулярный чемпионат<span aria-hidden="true"> · </span><span id="data-status" aria-live="polite">Загрузка…</span></p></div>
+      <div class="header-actions"><button type="button" class="button" id="refresh">Обновить</button></div>
+    </header>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <nav class="main-nav" aria-label="Разделы"><a href="#overview" data-view="overview" aria-current="page">Обзор</a><a href="#calendar" data-view="calendar">Календарь</a><a href="#players" data-view="players">Игроки</a><a href="#table" data-view="table">Таблица КХЛ</a></nav>
+    <p id="hub-status" class="hub-status" aria-live="polite"></p>
+    <section id="view-overview" class="hub-view" aria-label="Обзор Автомобилиста"><div id="overview-content"><div class="panel loading-panel">Загружаем данные команды…</div></div></section>
+    <section id="view-calendar" class="hub-view" aria-labelledby="calendar-title" hidden>
+      <div class="view-heading"><div><h2 id="calendar-title">Календарь матчей</h2><p class="view-subtitle">Время — Екатеринбург, UTC+5 · Счёт: «Автомобилист» — соперник</p></div><span id="calendar-meta" class="view-meta"></span></div>
+      <div class="calendar-toolbar"><div class="month-controls"><button type="button" id="calendar-prev" class="icon-button" aria-label="Предыдущий месяц">‹</button><h3 id="calendar-month">—</h3><button type="button" id="calendar-next" class="icon-button" aria-label="Следующий месяц">›</button><button type="button" id="calendar-nearest" class="text-button">Ближайший матч</button></div><div class="segmented" role="group" aria-label="Вид календаря"><button type="button" data-calendar-mode="month" aria-pressed="true">Месяц</button><button type="button" data-calendar-mode="list" aria-pressed="false">Список</button></div></div>
+      <div class="schedule-filters" role="group" aria-label="Место проведения"><button type="button" data-venue="all" aria-pressed="true">Все матчи</button><button type="button" data-venue="home" aria-pressed="false">Дома</button><button type="button" data-venue="away" aria-pressed="false">В гостях</button></div>
+      <div id="calendar-content"><div class="panel loading-panel">Загружаем календарь…</div></div>
+    </section>
+    <section id="view-players" class="hub-view" aria-labelledby="players-title" hidden>
+      <div class="view-heading"><div><h2 id="players-title">Игроки «Автомобилиста»</h2><p class="view-subtitle">Личные показатели за выбранный сезон</p></div><span id="players-meta" class="view-meta"></span></div>
+      <div class="players-toolbar"><div class="segmented" role="group" aria-label="Категория игроков"><button type="button" data-player-group="skaters" aria-pressed="true">Полевые</button><button type="button" data-player-group="goalies" aria-pressed="false">Вратари</button></div><div class="player-role-filters" role="group" aria-label="Амплуа"><button type="button" data-player-role="all" aria-pressed="true">Все</button><button type="button" data-player-role="forward" aria-pressed="false">Нападающие</button><button type="button" data-player-role="defensemen" aria-pressed="false">Защитники</button></div><label class="search"><span class="sr-only">Поиск игрока</span><input type="search" id="player-search" aria-label="Поиск игрока" placeholder="Поиск игрока"></label></div>
+      <div id="players-content"><div class="panel loading-panel">Загружаем статистику игроков…</div></div>
+    </section>
+    <section id="view-table" class="hub-view standings-view" aria-labelledby="standings-title" hidden><div class="view-heading"><div><h2 id="standings-title">Турнирная таблица КХЛ</h2><p class="view-subtitle">Регулярный чемпионат</p></div><button type="button" class="button" id="reset" title="Сбросить только сортировку: вернуть порядок КХЛ">По регламенту</button></div>
+    <div class="toolbar">
+      <div class="tabs" role="group" aria-label="Конференция"><button type="button" data-conference="all" aria-pressed="false">Вся лига</button><button type="button" data-conference="west" aria-pressed="false">Запад</button><button type="button" data-conference="east" aria-pressed="true">Восток</button></div>
+      <label class="search"><span class="sr-only">Поиск команды</span><input id="search" type="search" placeholder="Поиск команды" aria-label="Поиск команды"></label>
+    </div>
+    <div class="table-scroll" tabindex="0" aria-label="Турнирная таблица; на узком экране прокручивается по горизонтали">
+      <table>
+        <caption class="sr-only">Подробная турнирная таблица КХЛ. Заголовки столбцов позволяют сортировать команды.</caption>
+        <thead><tr>
+          <th scope="col" title="Номер строки в текущем порядке">№</th>
+          <th scope="col" class="team-col">Команда</th>
+          <th scope="col" data-sort="games"><button type="button" title="Сыгранные матчи" aria-label="Сортировать по сыгранным матчам">И<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="wins"><button type="button" title="Победы в основное время" aria-label="Сортировать по победам в основное время">В<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="otWins"><button type="button" title="Победы в овертайме" aria-label="Сортировать по победам в овертайме">ВО<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="soWins"><button type="button" title="Победы по буллитам" aria-label="Сортировать по победам по буллитам">ВБ<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="soLosses"><button type="button" title="Поражения по буллитам" aria-label="Сортировать по поражениям по буллитам">ПБ<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="otLosses"><button type="button" title="Поражения в овертайме" aria-label="Сортировать по поражениям в овертайме">ПО<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="losses"><button type="button" title="Поражения в основное время" aria-label="Сортировать по поражениям в основное время">П<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="goalsFor"><button type="button" title="Заброшенные шайбы" aria-label="Сортировать по заброшенным шайбам">ШЗ<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="goalsAgainst"><button type="button" title="Пропущенные шайбы" aria-label="Сортировать по пропущенным шайбам">ШП<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="goalDiff"><button type="button" title="Разница шайб" aria-label="Сортировать по разнице шайб">РШ<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="points" class="points-col"><button type="button" title="Набранные очки" aria-label="Сортировать по очкам">О<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="lost"><button type="button" title="Потерянные очки: 2 × игры − очки" aria-label="Сортировать по потерянным очкам">Потеряно<span class="sort-arrow" aria-hidden="true"></span></button></th>
+          <th scope="col" data-sort="pct" class="pct-col"><button type="button" title="Процент набранных очков: очки / (2 × игры) × 100%" aria-label="Сортировать по проценту набранных очков">% очков<span class="sort-arrow" aria-hidden="true"></span></button></th>
+        </tr></thead>
+        <tbody id="rows"><tr><td colspan="15" class="table-message">Загрузка таблицы…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="table-footer"><span id="results-count">Ожидание данных</span><span>Сортировка — по заголовку столбца</span><button type="button" class="text-button" id="export" disabled>Скачать CSV</button></div>
+    <p class="legend">В / ВО / ВБ — победы в основное время / овертайме / по буллитам; П / ПО / ПБ — поражения. ШЗ / ШП / РШ — заброшенные, пропущенные шайбы и их разница.</p>
+    <p class="legend" id="points-legend">Потеряно = 2 × И − О. % очков = О / (2 × И) × 100%. № — номер строки в текущем порядке.</p>
+    <p class="legend" id="scoring-note" hidden></p>
+    </section>
+    <footer><a href="https://www.khl.ru/standings/" target="_blank" rel="noopener noreferrer">Таблица КХЛ ↗</a><a href="https://khl.api.webcaster.pro/api/khl_mobile/tables_v2.json" target="_blank" rel="noopener noreferrer">Источник: Webcaster</a><span>Время — Екатеринбург · Данные КХЛ / Webcaster</span></footer>
+  </main>
+</body>
+</html>
